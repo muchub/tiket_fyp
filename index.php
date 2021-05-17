@@ -122,7 +122,7 @@
 
         #booking {
             font-family: montserrat, sans-serif;
-            background-image: url(img/background.jpg);
+            background-image: url(img/homebg.jpeg);
             background-size: cover;
             background-position: center
         }
@@ -234,7 +234,7 @@
         }
 
         .booking-cta h1 {
-            font-size: 52px;
+            font-size: 42px;
             text-transform: uppercase;
             color: #fff;
             font-weight: 700
@@ -261,10 +261,11 @@
                 <div class="row">
                     <div class="col-md-7 col-md-push-5">
                         <div class="booking-cta">
-                            <h1>Make your reservation</h1>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi facere, soluta magnam consectetur molestias itaque
-                                ad sint fugit architecto incidunt iste culpa perspiciatis possimus voluptates aliquid consequuntur cumque quasi.
-                                Perspiciatis.
+                            <h1>Smart parking & reservation system using qr code</h1>
+                            <p> - Berdekatan dng jeti</p>
+                            <p> - Parking berbumbung</p>
+                            <p> - Berdekatan dng kaunter tiket</p>
+                            <p> - Keselamatan kereta terjaga</p>
                             </p>
                         </div>
                     </div>
@@ -382,7 +383,7 @@
             }, function(data) {
                 console.log(data)
                 if (data == "OK") {
-                    alert("Your account has been registered")
+                    alert("Berjaya")
                 }
 
                 if (data == "user_email_error") {

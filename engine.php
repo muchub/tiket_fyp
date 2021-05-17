@@ -108,7 +108,7 @@ if (isset($_SESSION["logged"])) {
         $check_user_book = mysqli_query($conn, "SELECT * FROM user_booking WHERE user_id = '$fetch_user[id]'");
         if (mysqli_num_rows($check_user_book) > 0) {
             $fetch_user_book = mysqli_fetch_assoc($check_user_book);
-            echo "<img src='qrgen/generate.php?text=$fetch_user_book[qr_content]' width='100%'>";
+            echo "<img src='https://api.qrserver.com/v1/create-qr-code/?data=$fetch_user_book[qr_content]' width='100%'>";
         } else {
             echo "none";
         }

@@ -194,21 +194,34 @@ if (mysqli_num_rows($select_parking) == TRUE) {
                                 <?php
                                 for ($i = 0; $i < count($arrayParking); $i++) {
                                     $disable = "";
+                                    $checked = "";
+                                    $color = "#00b536";
                                     if ($arrayValid[$i] == "1") {
                                         $disable = "disabled";
+                                        $color = "red";
+                                        $checked = "checked";
                                     }
                                 ?>
                                     <div class="col-2">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="parkingLot" id="exampleRadios1" value="<?php echo $arrayParking[$i] ?>" <?php echo $disable; ?>>
+                                            <input class="form-check-input" type="radio" name="parkingLot" id="exampleRadios1" value="<?php echo $arrayParking[$i] ?>" <?php echo $disable . " " . $checked; ?>>
                                             <label class="form-check-label" for="exampleRadios1">
-                                                <?php echo $arrayParking[$i] ?>
+                                                <font color="<?php echo $color; ?>"><?php echo $arrayParking[$i] ?></font>
                                             </label>
                                         </div>
                                     </div>
                                 <?php
                                 }
                                 ?>
+                            </div>
+                            <hr>
+                            <div class="row" style="height:10px">
+                                <div class="col-sm-2 mb-5 p-3">
+                                    <font color="#00b536">Available</font>
+                                </div>
+                                <div class="col-sm-2 mb-5 p-3">
+                                    <font color="red">Booked</font>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -237,7 +250,7 @@ if (mysqli_num_rows($select_parking) == TRUE) {
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="input-group mb-3">
-                            <span class="input-group-text card_num" id="basic-addon1">CARD NUMBER</span>
+                            <span class="input-group-text card_num1" id="basic-addon1">CARD NUMBER</span>
                             <input type="text" class="form-control card_num" placeholder="Enter card number" aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                     </div>
@@ -245,7 +258,7 @@ if (mysqli_num_rows($select_parking) == TRUE) {
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="input-group mb-3">
-                            <span class="input-group-text card_num" id="basic-addon1">CARD HOLDER NAME</span>
+                            <span class="input-group-text" id="basic-addon1">CARD HOLDER NAME</span>
                             <input type="text" class="form-control card_name" placeholder="Enter card name" aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                     </div>
@@ -294,8 +307,8 @@ if (mysqli_num_rows($select_parking) == TRUE) {
 
         $.post("engine.php", {
             book_status: 1
-        }, function(data){
-            if(data != "none"){
+        }, function(data) {
+            if (data != "none") {
                 $(".payment").hide()
                 $(".set_date").hide()
                 $(".qr_code").show()
@@ -315,16 +328,16 @@ if (mysqli_num_rows($select_parking) == TRUE) {
                 parking: $("input[name='parkingLot']:checked").val()
             }, function(data) {
                 console.log(data)
-                if(data == "OK"){
+                if (data == "OK") {
                     $(".set_date").hide()
                     $(".payment").show()
                 }
 
-                if(data == "empty"){
+                if (data == "empty") {
                     alert("please fill all form")
                 }
 
-                if(data == "user_booked"){
+                if (data == "user_booked") {
                     alert("You already book parking before..")
                 }
             })
@@ -337,9 +350,9 @@ if (mysqli_num_rows($select_parking) == TRUE) {
                 start_date: $(".start_date").val(),
                 end_date: $(".end_date").val(),
                 parking: $("input[name='parkingLot']:checked").val()
-            }, function(data){
+            }, function(data) {
                 console.log(data)
-                if(data == "OKOK"){
+                if (data == "OKOK") {
                     alert("Your payment has been proceed")
                     $(".page-content").load("pages/book.php")
                 }

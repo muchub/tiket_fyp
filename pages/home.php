@@ -15,6 +15,18 @@ if (!isset($_SESSION["logged"])) {
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
-Welcome <?php echo $_SESSION["logged"] ?>
-<br>
-<font color="red">This page under construction</font>
+
+<div class="shadow-sm p-3 mb-5 rounded" style="background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(img/homebg.jpeg); background-size: cover; background-position: center; height:500px; ">
+    <font color="white">
+        <h1>
+            Smart parking & reservation system using qr code
+        </h1>
+        <hr>
+        <h5>
+            <p> - Berdekatan dng jeti</p>
+            <p> - Parking berbumbung</p>
+            <p> - Berdekatan dng kaunter tiket</p>
+            <p> - Keselamatan kereta terjaga</p>
+        </h5>
+    </font>
+</div>
