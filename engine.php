@@ -86,8 +86,10 @@ if (isset($_SESSION["logged"])) {
                 echo "OK";
             }
             if (isset($_POST["user_payment"])) {
+                $parking = mysqli_query($conn, "SELECT * FROM parking where code = '$_POST[parking]'");
+                $fparking = mysqli_fetch_assoc($parking);
                 $qr_content = $fetch_user["username"] . "_" . $fetch_user["plate_num"] . "_" . $_POST["parking"];
-                $do_book = mysqli_query($conn, "INSERT INTO user_booking (qr_content, user_id) VALUES ('$qr_content', '$fetch_user[id]')");
+                $do_book = mysqli_query($conn, "INSERT INTO user_booking (qr_content, user_id, parking_id) VALUES ('$qr_content', '$fetch_user[id]', '$fparking[id]')");
                 if ($do_book) {
                     $select_spot = mysqli_query($conn, "UPDATE parking set available = '1' WHERE code = '$_POST[parking]'");
                     if ($select_spot) {
@@ -112,5 +114,32 @@ if (isset($_SESSION["logged"])) {
         } else {
             echo "none";
         }
+    }
+}
+
+if(isset($_GET["checkqr"])){
+    $qrcontent = x($_GET["checkqr"]);
+
+    //echo $qrcontent;
+
+    $checkbook = mysqli_query($conn, "SELECT * FROM user_booking WHERE qr_content = '$qrcontent'");
+    if(mysqli_num_rows($checkbook) > 0){
+        $fetch_booking = mysqli_fetch_assoc($checkbook);
+        if($fetch_booking["qr_status"] == 0){
+            $update_qr = mysqli_query($conn, "UPDATE user_booking set qr_status = 1 WHERE qr_content = '$qrcontent'");
+            if($update_qr){
+                echo "in";
+            }
+        }
+
+        if($fetch_booking["qr_status"] == 1){
+            $delete_qr = mysqli_query($conn, "DELETE FROM user_booking WHERE qr_content = '$qrcontent'");
+            $reset_parking = mysqli_query($conn, "UPDATE parking set available = 0 WHERE id = '$fetch_booking[parking_id]'");
+            if($delete_qr){
+                echo "out";
+            }
+        }
+    }else{
+        echo "qr_not_found";
     }
 }

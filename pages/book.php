@@ -204,7 +204,7 @@ if (mysqli_num_rows($select_parking) == TRUE) {
                                 ?>
                                     <div class="col-2">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="parkingLot" id="exampleRadios1" value="<?php echo $arrayParking[$i] ?>" <?php echo $disable . " " . $checked; ?>>
+                                            <input class="form-check-input" type="radio" name="parkingLot" id="exampleRadios1" value="<?php echo $arrayParking[$i] ?>" <?php echo $disable  ?>>
                                             <label class="form-check-label" for="exampleRadios1">
                                                 <font color="<?php echo $color; ?>"><?php echo $arrayParking[$i] ?></font>
                                             </label>
@@ -215,27 +215,16 @@ if (mysqli_num_rows($select_parking) == TRUE) {
                                 ?>
                             </div>
                             <hr>
-                            <div class="row" style="height:10px">
-                                <div class="col-sm-2 mb-5 p-3">
-                                    <font color="#00b536">Available</font>
-                                </div>
-                                <div class="col-sm-2 mb-5 p-3">
-                                    <font color="red">Booked</font>
-                                </div>
-                            </div>
+                            <br>
+                            <font color="#00b536">Available</font>
+                            &nbsp; &nbsp; &nbsp; &nbsp;
+                            <font color="red">Booked</font>
                         </div>
                     </div>
                 </div>
-                <div class="form-btn">
-                    <div class="row">
-                        <div class="col-sm-2 mt-3">
-                            <button class="btn btn-info confirm">Confirm</button>
-                        </div>
-                        <div class="col-sm-2 mt-3">
-                            <button class="btn btn-danger cancel">Cancel</button>
-                        </div>
-                    </div>
-                </div>
+                <button class="btn btn-info confirm">Confirm</button>
+                &nbsp; &nbsp; &nbsp;
+                <button class="btn btn-danger cancel">Cancel</button>
             </div>
 
         </div>
