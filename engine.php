@@ -8,6 +8,18 @@ function x($string)
     return mysqli_real_escape_string($conn, $string);
 }
 
+function dateDiff($s_date, $e_date)
+{
+    $startTimeStamp = x(strtotime($s_date));
+    $endTimeStamp = x(strtotime($e_date));
+    $timeDiff = abs($endTimeStamp - $startTimeStamp);
+    $numberDays = $timeDiff / 86400;  // 86400 seconds in one day
+
+    // and you might want to convert to integer
+    $numberDays = intval($numberDays);
+    return $numberDays;
+}
+
 function dateDifference($start_date, $end_date)
 {
     // calulating the difference in timestamps 
@@ -68,17 +80,18 @@ if (isset($_SESSION["logged"])) {
         }
     }
 
+    if(isset($_POST['check_date'])){
+        $startDate = x($_POST["start_date"]);
+        $endDate = x($_POST["end_date"]);
+        echo (dateDiff($startDate, $endDate));
+    }
+
     if (isset($_POST["book"])) {
-
+        
         if (!empty($_POST["start_date"]) && !empty($_POST["end_date"]) && !empty($_POST["parking"])) {
-            // start date 
-            $start_date = $_POST["start_date"];
-
-            // end date 
-            $end_date = $_POST["end_date"];
-
-            // call dateDifference() function to find the number of days between two dates
-            $dateDiff = dateDifference($start_date, $end_date);
+            $startDate = x($_POST["start_date"]);
+            $endDate = x($_POST["end_date"]);
+            dateDiff($startDate, $endDate);
             $check_user_book = mysqli_query($conn, "SELECT * FROM user_booking WHERE user_id = '$fetch_user[id]'");
             if (mysqli_num_rows($check_user_book) > 0) {
                 echo "user_booked";
@@ -86,15 +99,16 @@ if (isset($_SESSION["logged"])) {
                 echo "OK";
             }
             if (isset($_POST["user_payment"])) {
+                
                 $parking = mysqli_query($conn, "SELECT * FROM parking where code = '$_POST[parking]'");
                 $fparking = mysqli_fetch_assoc($parking);
                 $qr_content = $fetch_user["username"] . "_" . $fetch_user["plate_num"] . "_" . $_POST["parking"];
-                $do_book = mysqli_query($conn, "INSERT INTO user_booking (qr_content, user_id, parking_id) VALUES ('$qr_content', '$fetch_user[id]', '$fparking[id]')");
+                $do_book = mysqli_query($conn, "INSERT INTO user_booking (qr_content, user_id, parking_id, start_date, end_date) VALUES ('$qr_content', '$fetch_user[id]', '$fparking[id]', '$startDate', '$endDate')");
                 if ($do_book) {
                     $select_spot = mysqli_query($conn, "UPDATE parking set available = '1' WHERE code = '$_POST[parking]'");
                     if ($select_spot) {
                         echo "OK";
-                    }else {
+                    } else {
                         echo "err update";
                     }
                 } else {
@@ -117,29 +131,43 @@ if (isset($_SESSION["logged"])) {
     }
 }
 
-if(isset($_GET["checkqr"])){
+if (isset($_GET["checkqr"])) {
     $qrcontent = x($_GET["checkqr"]);
 
     //echo $qrcontent;
 
     $checkbook = mysqli_query($conn, "SELECT * FROM user_booking WHERE qr_content = '$qrcontent'");
-    if(mysqli_num_rows($checkbook) > 0){
+    if (mysqli_num_rows($checkbook) > 0) {
         $fetch_booking = mysqli_fetch_assoc($checkbook);
-        if($fetch_booking["qr_status"] == 0){
+        if ($fetch_booking["qr_status"] == 0) {
             $update_qr = mysqli_query($conn, "UPDATE user_booking set qr_status = 1 WHERE qr_content = '$qrcontent'");
-            if($update_qr){
+            if ($update_qr) {
                 echo "in";
             }
         }
 
-        if($fetch_booking["qr_status"] == 1){
+        if ($fetch_booking["qr_status"] == 1) {
             $delete_qr = mysqli_query($conn, "DELETE FROM user_booking WHERE qr_content = '$qrcontent'");
             $reset_parking = mysqli_query($conn, "UPDATE parking set available = 0 WHERE id = '$fetch_booking[parking_id]'");
-            if($delete_qr){
+            if ($delete_qr) {
                 echo "out";
             }
         }
-    }else{
+    } else {
         echo "qr_not_found";
     }
+}
+
+//gate 
+$query = mysqli_query($conn, "SELECT * FROM gate_status");
+$fetch = mysqli_fetch_assoc($query);
+
+if (isset($_GET['gate_status'])) {
+    echo $fetch['status'];
+}
+
+if (isset($_GET['change'])) {
+    $status = x($_GET['change']);
+    $change = mysqli_query($conn, "UPDATE gate_status set status = '$status'");
+    echo $fetch['status'];
 }

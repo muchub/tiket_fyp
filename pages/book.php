@@ -318,6 +318,18 @@ if (mysqli_num_rows($select_parking) == TRUE) {
             }, function(data) {
                 console.log(data)
                 if (data == "OK") {
+                    $.post("engine.php", {
+                        check_date: 1,
+                        start_date: $(".start_date").val(),
+                        end_date: $(".end_date").val(),
+                    }, function(data) {
+                        let fixRate = parseInt(10)
+                        let totalDay = parseInt(data)
+
+                        let totalAmount = fixRate * totalDay;
+                        console.log("Total amount is RM " + totalAmount)
+                        alert("Total amount to be paid is RM " + totalAmount)
+                    })
                     $(".set_date").hide()
                     $(".payment").show()
                 }
